@@ -13,14 +13,14 @@ interface ContainerProps {
 export const Container = ({children} : ContainerProps)=>{
 
     const {collapsed,onCollapse,onExpand} = useSidebar((state)=>state)
-    const matches = useMediaQuery('max-width: 1024px')
+    const matches = useMediaQuery("(max-width: 1024px)")
 
 useEffect(()=>{
 if (matches) {
-    onCollapse()
+   onCollapse()
 }
 else{
-    onExpand()
+  onExpand()
 }
 
 },[matches,onCollapse,onExpand])
@@ -31,7 +31,5 @@ return (
  {children}
     </div>
       
-
- 
 )
 }
