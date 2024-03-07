@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 interface FollowingProps {
-    data : (Follow & {following : User})[] ;
+    data : (Follow & {following : User})[] | undefined;
 }
 
 
@@ -16,7 +16,7 @@ export const Following = ({data}:FollowingProps)=>{
     const {collapsed}=useSidebar((state)=>state)
 
 
-    if (!data.length){
+    if (!data?.length){
         return null;
     }
 return (
