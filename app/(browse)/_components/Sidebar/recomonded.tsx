@@ -3,6 +3,7 @@
 import { useSidebar } from "@/store/use-sidebar";
 import { User } from "@prisma/client";
 import { UserItem, UserItemSkeleton } from "./userItem";
+import { cn } from "@/lib/utils";
 
 interface RecomondedProps {
   data: User[];
@@ -20,7 +21,7 @@ export const Recomonded = ({ data }: RecomondedProps) => {
           <p className="text-sm text-muted-foreground">Recommended</p>
         </div>
       )}
-      <ul className="space-y-2 px-2">
+      <ul className={cn('px-2 space-y-2' ,collapsed && 'px-0')}>
         {data.map((user) => (
           <UserItem
             key={user.id}
