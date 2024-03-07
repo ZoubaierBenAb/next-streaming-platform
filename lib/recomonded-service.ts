@@ -27,6 +27,24 @@ export const getRecomonded = async () => {
                                 followerId: userId // ( some operator : at least one element satistfies the condition)
                             }
                         }
+                    },
+                    
+                },{
+                    NOT : {
+                        blocking : {
+                            some : {
+                                blockedId : userId
+                            }
+                        }
+                    },
+                    
+                },{
+                    NOT : {
+                        blocked: {
+                            some : {
+                                blockerId : userId
+                            }
+                        }
                     }
                 }]
             },

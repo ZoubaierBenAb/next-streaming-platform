@@ -1,10 +1,11 @@
 import { db } from "./db";
 import { getSelf } from "./auth-service";
+import { isFollowingUser } from "./follow-service";
 
 
 
 export const isBlockedByUser = async (id: string) => {
-
+ try {
     const self = await getSelf()
 
 
@@ -33,6 +34,10 @@ export const isBlockedByUser = async (id: string) => {
     })
     return !!existedBlock
 
+ } catch (error) {
+    return false
+ }
+   
 }
 export const blockUser = async (id: string) => {
 
@@ -63,6 +68,40 @@ export const blockUser = async (id: string) => {
     if (existedBlock) {
         throw new Error('You connot block yourself')
     }
+
+    const existedFollow =await isFollowingUser(otherUser.id)
+
+
+    if (existedFollow){
+        await db.follow.delete({
+            where : {
+              followerId_followingId:{
+                followerId : self.id,
+                followingId : otherUser.id
+              }
+            }
+        })
+    }
+    const isFollowing = await db.follow.findUnique({
+        where: {
+   followerId_followingId:{
+    followerId : otherUser.id,
+    followingId : self.id
+   }
+        }
+      });
+    
+      // Delete the follow relationship if it exists
+      if (isFollowing) {
+        await db.follow.delete({
+          where: {
+            followerId_followingId: {
+              followerId: otherUser.id,
+              followingId: self.id
+            }
+          }
+        });
+      }
 
     const block = await db.block.create({
         data: {

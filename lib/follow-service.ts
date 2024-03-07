@@ -108,17 +108,24 @@ export const unfollowUser = async (id: string) => {
 
 export const getFollowedUsers = async () => {
 
-    
+
     try {
         const self = await getSelf()
         const followedUsers = await db.follow.findMany({
             where: {
-                followerId: self.id
+                followerId: self.id,
+                following: {
+                    blocking: {
+                        none: {
+                            blockedId: self.id // to ensure the user that you are following is blocking you 
+                        }
+                    }
+                }
             },
             include: {
                 following: true
             }
-        })
+        }) //  the function retrieves the list of followers expect the followers that are blocking the user 
         return followedUsers
     } catch (error) {
         []
