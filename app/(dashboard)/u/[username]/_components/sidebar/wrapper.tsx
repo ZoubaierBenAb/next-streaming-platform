@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { useCreatorSidebar } from "@/store/useCreator-sidebar";
 import { useEffect, useState } from "react";
+import { NavItemsSkeleton } from "./nav-items";
 
 interface WrapperProps {
   children: React.ReactNode;
@@ -16,6 +17,13 @@ export const Wrapper = ({ children }: WrapperProps) => {
     setIsClient(true);
   }, []);
 
+  if (!isClient) {
+    return (
+      <ul className="gap-y-4">
+        {[...Array(4).map((_, i) => <NavItemsSkeleton key={i} />)]}
+      </ul>
+    );
+  }
 
   return (
     <aside
