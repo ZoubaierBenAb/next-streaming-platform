@@ -54,8 +54,23 @@ export const followUser = async (id: string) => {
             followingId: otherUser.id
         }
     })
+
+
     if (existingFollow) {
         throw new Error('Already follow')
+    }
+
+    const existingBlock = await db.block.findUnique({
+        where: {
+            blockerId_blockedId: {
+                blockerId: self.id,
+                blockedId: otherUser.id
+            }
+        }
+    })
+
+    if (existingBlock){
+        throw new Error ('you cant follow a blocked user')
     }
     const follow = await db.follow.create({
         data: {
