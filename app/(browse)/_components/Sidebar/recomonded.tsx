@@ -8,7 +8,9 @@ import { cn } from "@/lib/utils";
 
 interface RecomondedProps {
   data: (User & {
-    stream : Stream | null
+    stream : {
+      isLive : boolean
+    } 
   })[]
 }
 
