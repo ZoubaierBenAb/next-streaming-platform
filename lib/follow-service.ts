@@ -69,8 +69,8 @@ export const followUser = async (id: string) => {
         }
     })
 
-    if (existingBlock){
-        throw new Error ('you cant follow a blocked user')
+    if (existingBlock) {
+        throw new Error('you cant follow a blocked user')
     }
     const follow = await db.follow.create({
         data: {
@@ -138,8 +138,14 @@ export const getFollowedUsers = async () => {
                 }
             },
             include: {
-                following: true
+                following: {
+                    include : {
+                        stream : true
+                    }
+                }
+
             }
+
         }) //  the function retrieves the list of followers expect the followers that are blocking the user 
         return followedUsers
     } catch (error) {
