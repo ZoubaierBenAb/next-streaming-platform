@@ -6,6 +6,8 @@ import {
   useConnectionState,
   useRemoteParticipant,
 } from "@livekit/components-react";
+import { OfflineVideo } from './offline-video';
+import { Loading } from './loading';
 
 
 interface VideoProps {
@@ -24,14 +26,12 @@ Track.Source.Microphone
 let content
 
 if (!participant && connectionState === ConnectionState.Connected){
-    content = <p> host is offline</p>
-}
+    content = <OfflineVideo username={hostName}/>}
+
 else if (!participant && tracks.length === 0){
-    content = <p>
-        Loading...
-    </p>
+    content = <Loading label={connectionState}/>
 }
-else {
+else{ 
     content = <p>Live video</p>
 }
   return <div className="aspect-video border-b group relative">{content}</div>;
