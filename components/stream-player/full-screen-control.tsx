@@ -9,7 +9,7 @@ interface FullScreenControlProps{
 }
 
 
-const FullScreenControl = ({isFullScreen,onToggle}:FullScreenControlProps)=>{
+export const FullScreenControl = ({isFullScreen,onToggle}:FullScreenControlProps)=>{
 
 
 
@@ -22,8 +22,8 @@ const Icon = isFullScreen? Maximize : Minimize
     return (
         <div className="flex items-center justify-center gap-4 ">
              <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
+            <Tooltip >
+              <TooltipTrigger asChild>
                 <button
                   onClick={onToggle}
                 

@@ -2,12 +2,15 @@
 
 import { Track, Participant } from "livekit-client";
 
-import { useTrack, useTracks } from "@livekit/components-react";
+import { useTracks } from "@livekit/components-react";
 
 import { useRef, useState } from "react";
+import { FullScreenControl } from "./full-screen-control";
+
+import { useEventListener } from "usehooks-ts";
 
 interface LiveVideoProps {
-  participant: Participant;
+  participant?: Participant;
 }
 
 export const LiveVideo = ({ participant }: LiveVideoProps) => {
@@ -18,16 +21,21 @@ export const LiveVideo = ({ participant }: LiveVideoProps) => {
 
   const toggleFullScreen = () => {
     if (fullScreen) {
-      document.exitFullscreen();
-      setFullScreen(false);
+      document.exitFullscreen()
     } else if (wrapperRef?.current) {
-      wrapperRef?.current.requestFullscreen();
-      setFullScreen(true);
+      wrapperRef.current.requestFullscreen()
     }
   };
 
+  const handleFullscreenChange = () => {
+    const isCurrentlyFullscreen = document.fullscreenElement !== null;
+    setFullScreen(isCurrentlyFullscreen);
+  }
+
+  useEventListener("fullscreenchange", handleFullscreenChange, wrapperRef);
+
   useTracks([Track.Source.Camera, Track.Source.Microphone])
-    .filter((track) => track.participant.identity === participant.identity)
+    .filter((track) => track.participant.identity === participant?.identity)
     .forEach((track) => {
       if (videoRef.current) {
         track.publication.track?.attach(videoRef.current);
@@ -37,8 +45,8 @@ export const LiveVideo = ({ participant }: LiveVideoProps) => {
   return (
     <div ref={wrapperRef} className={"relative h-full flex"}>
       <video ref={videoRef} width={"100%"} />
-      <div className="absolue top-0 h-full opacity-0 hover:opacity-100 hover:transition-all">
-        <div className="abosulte bottom-0 flex h-14 w-full items-center justify-between bg-gradiant-to-rfrom-neutral-900 px-4">
+      <div className="absolute top-0 h-full w-full opacity-0 hover:opacity-100 hover:transition-all">
+        <div className="absolute bottom-0 flex h-14 w-full items-center justify-between bg-gradient-to-r from-neutral-900 px-4">
           <FullScreenControl
             isFullScreen={fullScreen}
             onToggle={toggleFullScreen}

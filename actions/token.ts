@@ -31,7 +31,7 @@ export const createViewerToken = async (id: string) => {
 
     const isHost = self.id === host.id
 
-    const token = new AccessToken(
+    const at= new AccessToken(
         process.env.LIVEKIT_API_KEY!,
         process.env.LIVEKIT_API_SECRET!,
         {
@@ -40,12 +40,14 @@ export const createViewerToken = async (id: string) => {
         }
 
     )
-    token.addGrant({
+    at.addGrant({
         room: host.id,
         roomJoin: true,
         canPublish: false,
         canPublishData: true
     })
+    const token = await at.toJwt()
 
-    return Promise.resolve(token.toJwt())
+
+    return token
 }
