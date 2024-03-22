@@ -8,12 +8,16 @@ import {
 } from "../ui/tooltip";
 
 interface VolumeControlProps {
-  onChange: () => void;
+  onChange: (value: number) => void;
   onToggle: () => void;
   value: number;
 }
 
-export const VolumeControl = ({ onChange, onToggle, value }) => {
+export const VolumeControl = ({
+  onChange,
+  onToggle,
+  value,
+}: VolumeControlProps) => {
   const volumeIsMute = value === 0;
   const volumeIsAboveHalf = (value = 50);
 
